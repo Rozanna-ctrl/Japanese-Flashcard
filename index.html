@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Learn Japanese! 日本語を学ぼう！</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif; 
+      background-color: bisque;
+      font-size: large;
+      text-align: center;
+      padding: 50px; 
+      margin: 20px;
+      margin-bottom: 80px;
+    }
+
+    .flashcard-container {
+      perspective: 1000px;
+      margin: 0 auto;
+      width: 300px;
+      height: 400px;
+      cursor: pointer;
+    }
+
+    .flashcard {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+    }
+
+    .flashcard-container:hover .flashcard {
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .flashcard.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .front, .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      border-radius: 10px;
+    }
+
+    .front {
+      background-color: rgb(97, 177, 252);
+      color: #333;
+    }
+
+    .back {
+      background-color: #ff6060;
+      color: #ffffff;
+      transform: rotateY(180deg);
+    }
+
+    .language {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    .word {
+      font-size: 50px;
+    }
+
+    .controls {
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 16px;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+    }
+
+    button:hover {
+      background: #555;
+    }
+
+    .instruction {
+      margin-top: 20px;
+      font-style: italic;
+      color: #666;
+    }
+  </style>
+
+
+</head>
+<body>
+  <h1>日本語を学ぼう！</h1>
+
+  <style>
+    
+    img{
+      margin: 90px;
+float: left;
+
+    }
+  </style>
+ 
+
+
+  <div class="flashcard-container" id="flashcard-container">
+    <div class="flashcard" id="flashcard">
+      <div class="front">
+        <div class="language">English</div>
+        <div class="word">A</div>
+      </div>
+      <div class="back">
+        <div class="language">Japanese</div>
+        <div class="word">あ</div>
+      </div>
+    </div>
+  </div>
+
+ 
+
+
+  <p class="instruction">Click on the card to flip it</p>
+
+  <div class="controls">
+    <button id="prev-btn">Previous</button>
+    <button id="next-btn">Next</button>
+  </div>
+
+  <script>
+alt= "Contact us via Reddit"
+
+    //vocab
+    const flashcards = [
+      { front: "A", back: "あ" },
+      { front: "I", back: "い" },
+      { front: "U", back: "う" },
+      { front: "E", back: "え" },
+      { front: "O", back: "お" },
+      { front: "Ka", back: "か" },
+      { front: "Ki", back: "き" },
+      { front: "KU", back: "く" },
+      { front: "Ke", back: "け" },
+      { front: "Ko", back: "こ" },
+      { front: "Ta", back: "た" },
+      { front: "Chi", back: "ち" },
+      { front: "Tsu", back: "つ" },
+      { front: "Te", back: "て" },
+      { front: "To", back: "と" },
+      { front: "Ra", back: "ら" },
+      { front: "Ri", back: "り" },
+      { front: "Ru", back: "る" },
+      { front: "Re", back: "れ" },
+      { front: "Ro", back: "ろ" },
+      { front: "Ha", back: "は" },
+      { front: "Hi", back: "ひ" },
+      { front: "Fu", back: "ふ" },
+      { front: "He", back: "へ" },
+      { front: "Ho", back: "ほ" },
+      { front: "Na", back: "な" },
+      { front: "Ni", back: "に" },
+      { front: "Nu", back: "ね" },
+      { front: "Ne", back: "ね" },
+      { front: "No", back: "の" },
+      { front: "N", back: "ん" },
+      { front: "Wo", back: "を" },
+      { front: "Wa", back: "わ" },
+
+      { front: "Mu", back: "む" },
+      { front: "Me", back: "め" },
+      { front: "Mo", back: "も" },
+      { front: "Ma", back: "ま" },
+      { front: "Mi", back: "み" },
+      { front: "Ba", back: "ば" },
+      { front: "Bi", back: "び" },
+      { front: "Bu", back: "ぶ" },
+      { front: "Be", back: "べ" },
+      { front: "Bo", back: "ぼ" },
+      { front: "Ga", back: "が" },
+      { front: "Gi", back: "ぎ" },
+
+      { front: "Gu", back: "ぐ" },
+      { front: "Go", back: "ご" },
+      { front: "Ge", back: "げ" },
+      { front: "Za", back: "ざ" },
+      { front: "Ji", back: "じ" },
+      { front: "Zu", back: "ず" },
+
+      { front: "Ze", back: "ぜ" },
+      { front: "Zo", back: "ぞ" },
+    
+    ];
+
+        
+    let currentCardIndex = 0;
+    
+
+    // Card elements
+    const flashcard = document.getElementById('flashcard');
+    const frontWord = document.querySelector('.front .word');
+    const backWord = document.querySelector('.back .word');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    
+    // Function to update card content
+    function updateCard() {
+      frontWord.textContent = flashcards[currentCardIndex].front;
+      backWord.textContent = flashcards[currentCardIndex].back;
+      flashcard.classList.remove('flipped');
+    }
+    
+  //first card
+    updateCard();
+    
+    // click  
+    document.getElementById('flashcard-container').addEventListener('click', function() {
+      flashcard.classList.toggle('flipped');
+    });
+    
+    // Previous button
+    prevBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length;
+      updateCard();
+    });
+    
+    // Next button
+    nextBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+      updateCard();
+    });
+    
+    // Keyboard accessibility
+    document.addEventListener('keydown', function(e) {
+      if (e.key === ' ' || e.code === 'Space') {
+        flashcard.classList.toggle('flipped');
+      } else if (e.key === 'ArrowLeft') {
+        prevBtn.click();
+      } else if (e.key === 'ArrowRight') {
+        nextBtn.click();
+      }
+    });
+  </script>
+
+  <h1>After finishing, try to read this → はい </h1>
+     <a href="answer.html">ANSWER</a> 
+ 
+
+    
+
+</body>
+</html>
+
+<style>
+  img{
+margin: 3px;
+margin-top: 60px;
+
+  }
+
+</style>
+
+
